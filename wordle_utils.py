@@ -1,3 +1,16 @@
+def read_top_words(filepath):
+
+    top_words = []
+    fq = open(filepath, "r")
+
+    for x in fq:
+        words = x.strip().split(' ')
+        for word in words:
+            top_words.append(word)
+
+    return list(set(top_words))
+
+
 def limit_to_five_letters(word_list):
 
     wordle_words = []
@@ -18,6 +31,7 @@ def wordle_solver(wordle):
     good_keys = list(wordle.good_letters_good_placement.keys())
     bad_keys = list(wordle.good_letters_bad_placement.keys())
 
+    # Find eligible words
     for w in wordle.wordle_words:
 
         contains_good_letters = check_for_any_good_letters(wordle=wordle, word=w)
@@ -42,6 +56,22 @@ def wordle_solver(wordle):
 
     print("\nEligible word count:", len(eligible_correct_words))
     print("Eligible word list:\n", eligible_correct_words)
+
+    top_eligible_correct_words_idx = []
+    top_eligible_correct_words = []
+    i = 0
+
+    # Sort by top words, otherwise print alphabetically
+    for w in wordle.top_wordle_words:
+        i += 1
+        if w in eligible_correct_words:
+            top_eligible_correct_words.append(w)
+            top_eligible_correct_words_idx.append(i)
+
+            if len(top_eligible_correct_words) == 1:
+                print("Top eligible word list:")
+
+            print("{}.) {}".format(i, w))
 
 
 def check_for_any_good_letters(wordle, word):
