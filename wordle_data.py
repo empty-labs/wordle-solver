@@ -18,6 +18,7 @@ class Wordle:
         self.guess_words = []
         self.good_letters_good_placement = {}
         self.good_letters_bad_placement = {}
+        self.bad_letters = []
 
     def set_data(self):
 
@@ -45,6 +46,7 @@ class Wordle:
         self.guess_words.append(guess_word)
         print('\nGuess:', guess_word)
 
+        # Assign good letters to dictionaries
         for i in range(len(good_letters_good_placement)):
 
             # Good placement
@@ -65,8 +67,16 @@ class Wordle:
                     self.good_letters_bad_placement[good_letters[i]] = []
                     self.good_letters_bad_placement[good_letters[i]].append(good_letters_bad_placement[i])
 
+        # Find bad letters
+        for a in guess_word:
+            if a not in good_letters:
+                self.bad_letters.append(a)
+
+        self.bad_letters = list(set(self.bad_letters))
+
         print('Good placement dictionary', self.good_letters_good_placement)
         print('Bad placement dictionary', self.good_letters_bad_placement)
+        print('Bad letters', self.bad_letters)
 
     def wordle_solver(self):
 
@@ -76,38 +86,49 @@ class Wordle:
 
         for w in self.wordle_words:
 
-            eligible_bad_keys_correct = 0
-            eligible_good_keys_correct = 0
+            contains_good_letters = True
 
+            # Check bad letters
             for i in range(len(w)):
+                if contains_good_letters == True:
+                    if w[i] in self.bad_letters:
+                        contains_good_letters = False
 
-                # Check that word uses key letters and not in bad placement
-                if w[i] in bad_keys:
-                    if i not in self.good_letters_bad_placement[w[i]]:
-                        eligible_bad_keys_correct += 1
+            # Check good letters
+            if contains_good_letters == True:
 
-                # Check that word uses key letters and in good placement
-                if w[i] in good_keys:
-                    if i in self.good_letters_good_placement[w[i]]:
-                        eligible_good_keys_correct += 1
+                eligible_bad_keys_correct = 0
+                eligible_good_keys_correct = 0
 
-            # Check all bad keys are in word at least once
-            all_bad_keys_at_least_once = 0
-            for k in bad_keys:
-                if k in w:
-                    all_bad_keys_at_least_once += 1
+                for i in range(len(w)):
 
-            # Check all good keys are in word at least once
-            all_good_keys_at_least_once = 0
-            for k in good_keys:
-                if k in w:
-                    all_good_keys_at_least_once += 1
+                    # Check that word uses key letters and not in bad placement
+                    if w[i] in bad_keys:
+                        if i not in self.good_letters_bad_placement[w[i]]:
+                            eligible_bad_keys_correct += 1
 
-            if eligible_bad_keys_correct >= len(bad_keys) and \
-                    all_bad_keys_at_least_once == len(bad_keys) and \
-                    eligible_good_keys_correct >= len(good_keys) and \
-                    all_good_keys_at_least_once == len(good_keys):
-                eligible_correct_words.append(w)
+                    # Check that word uses key letters and in good placement
+                    if w[i] in good_keys:
+                        if i in self.good_letters_good_placement[w[i]]:
+                            eligible_good_keys_correct += 1
+
+                # Check all bad keys are in word at least once
+                all_bad_keys_at_least_once = 0
+                for k in bad_keys:
+                    if k in w:
+                        all_bad_keys_at_least_once += 1
+
+                # Check all good keys are in word at least once
+                all_good_keys_at_least_once = 0
+                for k in good_keys:
+                    if k in w:
+                        all_good_keys_at_least_once += 1
+
+                if eligible_bad_keys_correct >= len(bad_keys) and \
+                        all_bad_keys_at_least_once == len(bad_keys) and \
+                        eligible_good_keys_correct >= len(good_keys) and \
+                        all_good_keys_at_least_once == len(good_keys):
+                    eligible_correct_words.append(w)
 
         print("\nEligible word count:", len(eligible_correct_words))
         print("Eligible word list:\n", eligible_correct_words)
