@@ -6,43 +6,19 @@ def wordle_solver(wordle):
 
     for w in wordle.wordle_words:
 
-        contains_good_letters = True
-
-        # Check bad letters
-        for i in range(len(w)):
-            if contains_good_letters == True:
-                if w[i] in wordle.bad_letters:
-                    contains_good_letters = False
+        contains_good_letters = check_for_any_good_letters(wordle=wordle, word=w)
 
         # Check good letters
         if contains_good_letters == True:
 
-            eligible_bad_keys_correct = 0
-            eligible_good_keys_correct = 0
-
-            for i in range(len(w)):
-
-                # Check that word uses key letters and not in bad placement
-                if w[i] in bad_keys:
-                    if i not in wordle.good_letters_bad_placement[w[i]]:
-                        eligible_bad_keys_correct += 1
-
-                # Check that word uses key letters and in good placement
-                if w[i] in good_keys:
-                    if i in wordle.good_letters_good_placement[w[i]]:
-                        eligible_good_keys_correct += 1
+            eligible_bad_keys_correct, eligible_good_keys_correct = check_eligible_letters(
+                wordle=wordle, bad_keys=bad_keys, good_keys=good_keys, word=w)
 
             # Check all bad keys are in word at least once
-            all_bad_keys_at_least_once = 0
-            for k in bad_keys:
-                if k in w:
-                    all_bad_keys_at_least_once += 1
+            all_bad_keys_at_least_once = check_all_keys_at_once(keys=bad_keys, word=w)
 
             # Check all good keys are in word at least once
-            all_good_keys_at_least_once = 0
-            for k in good_keys:
-                if k in w:
-                    all_good_keys_at_least_once += 1
+            all_good_keys_at_least_once = check_all_keys_at_once(keys=good_keys, word=w)
 
             if eligible_bad_keys_correct >= len(bad_keys) and \
                     all_bad_keys_at_least_once == len(bad_keys) and \
@@ -52,3 +28,47 @@ def wordle_solver(wordle):
 
     print("\nEligible word count:", len(eligible_correct_words))
     print("Eligible word list:\n", eligible_correct_words)
+
+
+def check_for_any_good_letters(wordle, word):
+
+    contains_good_letters = True
+
+    # Check bad letters
+    for i in range(len(word)):
+        if contains_good_letters == True:
+            if word[i] in wordle.bad_letters:
+                contains_good_letters = False
+
+    return contains_good_letters
+
+
+def check_eligible_letters(wordle, bad_keys, good_keys, word):
+
+    eligible_bad_keys_correct = 0
+    eligible_good_keys_correct = 0
+
+    for i in range(len(word)):
+
+        # Check that word uses key letters and not in bad placement
+        if word[i] in bad_keys:
+            if i not in wordle.good_letters_bad_placement[word[i]]:
+                eligible_bad_keys_correct += 1
+
+        # Check that word uses key letters and in good placement
+        if word[i] in good_keys:
+            if i in wordle.good_letters_good_placement[word[i]]:
+                eligible_good_keys_correct += 1
+
+    return eligible_bad_keys_correct, eligible_good_keys_correct
+
+
+def check_all_keys_at_once(keys, word):
+
+    all_keys_at_least_once = 0
+
+    for k in keys:
+        if k in word:
+            all_keys_at_least_once += 1
+
+    return all_keys_at_least_once
