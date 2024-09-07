@@ -36,8 +36,8 @@ class Wordle:
         self.wordle_words.sort()
         print("Number of eligible Wordle words:",len(self.wordle_words))
 
-    def wordle_puzzle(self, guess_word: str, good_letters: list = [], good_letters_bad_placement: list = [],
-                      good_letters_good_placement: list = []):
+    def wordle_guess(self, guess_word: str, good_letters: list = [], good_letters_bad_placement: list = [],
+                     good_letters_good_placement: list = []):
         """
         placement is 0-based indexing
         """
