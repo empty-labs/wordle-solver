@@ -1,5 +1,21 @@
+import wordle_utils as wu
+
 # Constants
+# https://github.com/dwyl/english-words/blob/master/words_alpha.txt
 WORDS_FILEPATH = r"/Users/derekfromtexas/Downloads/words_alpha.txt"
+
+# https://en.wiktionary.org/wiki/Wiktionary:Frequency_lists/English/Wikipedia_(2016)#1-1000
+TOP_WORDS_FILEPATH_1 = r"/Users/derekfromtexas/Downloads/frequent_words_1-1000.txt"
+TOP_WORDS_FILEPATH_2 = r"/Users/derekfromtexas/Downloads/frequent_words_1001-2000.txt"
+TOP_WORDS_FILEPATH_3 = r"/Users/derekfromtexas/Downloads/frequent_words_2001-3000.txt"
+TOP_WORDS_FILEPATH_4 = r"/Users/derekfromtexas/Downloads/frequent_words_3001-4000.txt"
+TOP_WORDS_FILEPATH_5 = r"/Users/derekfromtexas/Downloads/frequent_words_4001-5000.txt"
+TOP_WORDS_FILEPATH_6 = r"/Users/derekfromtexas/Downloads/frequent_words_5001-6000.txt"
+TOP_WORDS_FILEPATH_7 = r"/Users/derekfromtexas/Downloads/frequent_words_6001-7000.txt"
+TOP_WORDS_FILEPATH_8 = r"/Users/derekfromtexas/Downloads/frequent_words_7001-8000.txt"
+TOP_WORDS_FILEPATH_9 = r"/Users/derekfromtexas/Downloads/frequent_words_8001-9000.txt"
+TOP_WORDS_FILEPATH_10 = r"/Users/derekfromtexas/Downloads/frequent_words_9001-10000.txt"
+TOP_WORDS_FILEPATH_11 = r"/Users/derekfromtexas/Downloads/frequent_words_10001-20000.txt"
 
 
 class Wordle:
@@ -11,10 +27,27 @@ class Wordle:
         for x in f:
             data.append(x.strip())
 
+        top_words = wu.read_top_words(filepath=TOP_WORDS_FILEPATH_1)
+        top_words = top_words + wu.read_top_words(filepath=TOP_WORDS_FILEPATH_2)
+        top_words = top_words + wu.read_top_words(filepath=TOP_WORDS_FILEPATH_3)
+        top_words = top_words + wu.read_top_words(filepath=TOP_WORDS_FILEPATH_4)
+        top_words = top_words + wu.read_top_words(filepath=TOP_WORDS_FILEPATH_5)
+        top_words = top_words + wu.read_top_words(filepath=TOP_WORDS_FILEPATH_6)
+        top_words = top_words + wu.read_top_words(filepath=TOP_WORDS_FILEPATH_7)
+        top_words = top_words + wu.read_top_words(filepath=TOP_WORDS_FILEPATH_8)
+        top_words = top_words + wu.read_top_words(filepath=TOP_WORDS_FILEPATH_9)
+        top_words = top_words + wu.read_top_words(filepath=TOP_WORDS_FILEPATH_10)
+        top_words = top_words + wu.read_top_words(filepath=TOP_WORDS_FILEPATH_11)
+
+        print("Number of top words", len(top_words))
+
         # Baseline
         self.data = data
+        self.top_words = top_words
+
         self.words = []
         self.wordle_words = []
+        self.top_wordle_words = []
         self.guess_words = []
         self.good_letters_good_placement = {}
         self.good_letters_bad_placement = {}
@@ -23,19 +56,11 @@ class Wordle:
     def set_data(self):
 
         self.words = list(self.data)
-
-        wordle_words = []
-
-        for w in self.words:
-            if type(w) is not float:  # avoid nan being considered a float with no length
-                if len(w) == 5 and \
-                        '-' not in w and \
-                        ' ' not in w:
-                    wordle_words.append(w)
-
-        self.wordle_words = list(set(wordle_words))
+        self.wordle_words = wu.limit_to_five_letters(word_list=self.words)
+        self.top_wordle_words = wu.limit_to_five_letters(word_list=self.top_words)
+        print("Number of top Wordle words", len(self.top_wordle_words))
         self.wordle_words.sort()
-        print("Number of eligible Wordle words:",len(self.wordle_words))
+        print("Number of eligible Wordle words:", len(self.wordle_words))
 
     def wordle_guess(self, guess_word: str, good_letters: list = [], good_letters_bad_placement: list = [],
                      good_letters_good_placement: list = []):
