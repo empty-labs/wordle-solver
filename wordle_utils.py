@@ -1,3 +1,17 @@
+def limit_to_five_letters(word_list):
+
+    wordle_words = []
+
+    for w in word_list:
+        if type(w) is not float:  # avoid nan being considered a float with no length
+            if len(w) == 5 and \
+                    '-' not in w and \
+                    ' ' not in w:
+                wordle_words.append(w)
+
+    return list(set(wordle_words))
+
+
 def wordle_solver(wordle):
 
     eligible_correct_words = []
