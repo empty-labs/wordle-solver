@@ -43,7 +43,7 @@ class Wordle:
         """
 
         self.guess_words.append(guess_word)
-        print('Guess:', guess_word)
+        print('\nGuess:', guess_word)
 
         for i in range(len(good_letters_good_placement)):
 
@@ -65,10 +65,10 @@ class Wordle:
                     self.good_letters_bad_placement[good_letters[i]] = []
                     self.good_letters_bad_placement[good_letters[i]].append(good_letters_bad_placement[i])
 
-        print('good guess', self.good_letters_good_placement)
-        print('bad guess', self.good_letters_bad_placement)
+        print('Good placement dictionary', self.good_letters_good_placement)
+        print('Bad placement dictionary', self.good_letters_bad_placement)
 
-    def eligible_wordle_outcome(self):
+    def wordle_solver(self):
 
         eligible_correct_words = []
         good_keys = list(self.good_letters_good_placement.keys())
@@ -109,18 +109,6 @@ class Wordle:
                     all_good_keys_at_least_once == len(good_keys):
                 eligible_correct_words.append(w)
 
-        print(len(eligible_correct_words))
-        print(eligible_correct_words)
-
-
-wdl = Wordle()
-wdl.set_data()
-wdl.wordle_puzzle(guess_word='pound', good_letters=['o', 'n'], good_letters_bad_placement=[1, 3])
-wdl.wordle_puzzle(guess_word='dawgs', good_letters=['w'], good_letters_bad_placement=[2])
-wdl.wordle_puzzle(guess_word='known', good_letters=['n', 'o', 'w', 'n'], good_letters_bad_placement=[1, 2, 3, 4])
-wdl.wordle_puzzle(guess_word='raven', good_letters=['r', 'e', 'n'], good_letters_bad_placement=[0, None, 4], good_letters_good_placement=[None, 3, None])
-# d.wordle_puzzle(guess_word='owned', good_letters=['o', 'w', 'n', 'e'], good_letters_good_placement=[0, 1, 2, 3])
-
-wdl.eligible_wordle_outcome()
-# TODO Make certain letters ineligible
+        print("\nEligible word count:", len(eligible_correct_words))
+        print("Eligible word list:\n", eligible_correct_words)
 
