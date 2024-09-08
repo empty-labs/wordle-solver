@@ -60,18 +60,20 @@ def wordle_solver(wordle):
     top_eligible_correct_words_idx = []
     top_eligible_correct_words = []
     i = 0
+    j = 0
 
     # Sort by top words, otherwise print alphabetically
     for w in wordle.top_wordle_words:
         i += 1
         if w in eligible_correct_words:
+            j += 1
             top_eligible_correct_words.append(w)
             top_eligible_correct_words_idx.append(i)
 
             if len(top_eligible_correct_words) == 1:
                 print("Top eligible word list:")
 
-            print("{}.) {}".format(i, w))
+            print("{}-{}.) {}".format(j, i, w))
 
 
 def check_for_any_good_letters(wordle, word):
