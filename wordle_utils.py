@@ -9,6 +9,19 @@ def read_txt(filepath):
     return data
 
 
+def list_top_wordle_words(wordle):
+
+    i = 0
+
+    # Sort by top words
+    for w in wordle.top_wordle_words:
+
+        i += 1
+        if i == 1:
+            print("Top eligible word list:")
+        print("{}.) {}".format(i, w))
+
+
 def wordle_solver(wordle):
 
     eligible_correct_words = []
