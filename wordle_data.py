@@ -16,6 +16,20 @@ TOP_WORDS_FILEPATH_8 = r"/Users/derekfromtexas/Downloads/frequent_words_7001-800
 TOP_WORDS_FILEPATH_9 = r"/Users/derekfromtexas/Downloads/frequent_words_8001-9000.txt"
 TOP_WORDS_FILEPATH_10 = r"/Users/derekfromtexas/Downloads/frequent_words_9001-10000.txt"
 TOP_WORDS_FILEPATH_11 = r"/Users/derekfromtexas/Downloads/frequent_words_10001-20000.txt"
+TOP_WORDS_FILEPATH_12 = r"/Users/derekfromtexas/Downloads/frequent_words_20001-30000.txt"
+TOP_WORDS_FILEPATH_13 = r"/Users/derekfromtexas/Downloads/frequent_words_30001-40000.txt"
+TOP_WORDS_FILEPATH_14 = r"/Users/derekfromtexas/Downloads/frequent_words_40001-50000.txt"
+TOP_WORDS_FILEPATH_15 = r"/Users/derekfromtexas/Downloads/frequent_words_50001-60000.txt"
+TOP_WORDS_FILEPATH_16 = r"/Users/derekfromtexas/Downloads/frequent_words_60001-70000.txt"
+TOP_WORDS_FILEPATH_17 = r"/Users/derekfromtexas/Downloads/frequent_words_70001-80000.txt"
+TOP_WORDS_FILEPATH_18 = r"/Users/derekfromtexas/Downloads/frequent_words_80001-90000.txt"
+TOP_WORDS_FILEPATH_19 = r"/Users/derekfromtexas/Downloads/frequent_words_90001-100000.txt"
+TOP_WORDS_FILEPATH_20 = r"/Users/derekfromtexas/Downloads/frequent_words_100001-110000.txt"
+TOP_WORDS_FILEPATH_21 = r"/Users/derekfromtexas/Downloads/frequent_words_110001-120000.txt"
+TOP_WORDS_FILEPATH_22 = r"/Users/derekfromtexas/Downloads/frequent_words_120001-130000.txt"
+TOP_WORDS_FILEPATH_23 = r"/Users/derekfromtexas/Downloads/frequent_words_130001-140000.txt"
+TOP_WORDS_FILEPATH_24 = r"/Users/derekfromtexas/Downloads/frequent_words_140001-150000.txt"
+TOP_WORDS_FILEPATH_25 = r"/Users/derekfromtexas/Downloads/frequent_words_150001-157000.txt"
 
 
 class Wordle:
@@ -38,8 +52,20 @@ class Wordle:
         top_words = top_words + wu.read_top_words(filepath=TOP_WORDS_FILEPATH_9)
         top_words = top_words + wu.read_top_words(filepath=TOP_WORDS_FILEPATH_10)
         top_words = top_words + wu.read_top_words(filepath=TOP_WORDS_FILEPATH_11)
-
-        print("Number of top words", len(top_words))
+        top_words = top_words + wu.read_top_words(filepath=TOP_WORDS_FILEPATH_12)
+        top_words = top_words + wu.read_top_words(filepath=TOP_WORDS_FILEPATH_13)
+        top_words = top_words + wu.read_top_words(filepath=TOP_WORDS_FILEPATH_14)
+        top_words = top_words + wu.read_top_words(filepath=TOP_WORDS_FILEPATH_15)
+        top_words = top_words + wu.read_top_words(filepath=TOP_WORDS_FILEPATH_16)
+        top_words = top_words + wu.read_top_words(filepath=TOP_WORDS_FILEPATH_17)
+        top_words = top_words + wu.read_top_words(filepath=TOP_WORDS_FILEPATH_18)
+        top_words = top_words + wu.read_top_words(filepath=TOP_WORDS_FILEPATH_19)
+        top_words = top_words + wu.read_top_words(filepath=TOP_WORDS_FILEPATH_20)
+        top_words = top_words + wu.read_top_words(filepath=TOP_WORDS_FILEPATH_21)
+        top_words = top_words + wu.read_top_words(filepath=TOP_WORDS_FILEPATH_22)
+        top_words = top_words + wu.read_top_words(filepath=TOP_WORDS_FILEPATH_23)
+        top_words = top_words + wu.read_top_words(filepath=TOP_WORDS_FILEPATH_24)
+        top_words = top_words + wu.read_top_words(filepath=TOP_WORDS_FILEPATH_25)
 
         # Baseline
         self.data = data
