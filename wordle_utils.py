@@ -1,40 +1,12 @@
-def ordered_set(word_list):
+def read_txt(filepath):
 
-    word_list_set = list(set(word_list))
-    ordered_word_list = []
+    data = []
+    f = open(filepath, "r")
 
-    for w in word_list:
-        if w in word_list_set and w not in ordered_word_list:
-            ordered_word_list.append(w)
+    for x in f:
+        data.append(x.strip())
 
-    return ordered_word_list
-
-
-def read_top_words(filepath):
-
-    top_words = []
-    fq = open(filepath, "r")
-
-    for x in fq:
-        words = x.strip().split(' ')
-        for word in words:
-            top_words.append(word)
-
-    return ordered_set(word_list=top_words)
-
-
-def limit_to_five_letters(word_list):
-
-    wordle_words = []
-
-    for w in word_list:
-        if type(w) is not float:  # avoid nan being considered a float with no length
-            if len(w) == 5 and \
-                    '-' not in w and \
-                    ' ' not in w:
-                wordle_words.append(w)
-
-    return ordered_set(word_list=wordle_words)
+    return data
 
 
 def wordle_solver(wordle):
