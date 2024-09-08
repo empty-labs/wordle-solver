@@ -1,3 +1,15 @@
+def ordered_set(word_list):
+
+    word_list_set = list(set(word_list))
+    ordered_word_list = []
+
+    for w in word_list:
+        if w in word_list_set and w not in ordered_word_list:
+            ordered_word_list.append(w)
+
+    return ordered_word_list
+
+
 def read_top_words(filepath):
 
     top_words = []
@@ -8,7 +20,7 @@ def read_top_words(filepath):
         for word in words:
             top_words.append(word)
 
-    return list(set(top_words))
+    return ordered_set(word_list=top_words)
 
 
 def limit_to_five_letters(word_list):
@@ -22,7 +34,7 @@ def limit_to_five_letters(word_list):
                     ' ' not in w:
                 wordle_words.append(w)
 
-    return list(set(wordle_words))
+    return ordered_set(word_list=wordle_words)
 
 
 def wordle_solver(wordle):
