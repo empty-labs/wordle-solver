@@ -84,6 +84,15 @@ class Wordle:
         self.words = list(self.data)
         self.wordle_words = wu.limit_to_five_letters(word_list=self.words)
         self.top_wordle_words = wu.limit_to_five_letters(word_list=self.top_words)
+
+        with open('wordle_words.txt', 'a') as f:
+            for w in self.wordle_words:
+                f.write(w + '\n')
+
+        with open('frequent_wordle_words.txt', 'a') as f:
+            for w in self.top_wordle_words:
+                f.write(w + '\n')
+
         print("Number of top Wordle words", len(self.top_wordle_words))
         self.wordle_words.sort()
         print("Number of eligible Wordle words:", len(self.wordle_words))
