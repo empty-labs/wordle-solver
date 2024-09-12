@@ -44,6 +44,8 @@ class Wordle:
             if good_letters_good_placement[i] is not None:
                 if good_letters[i] in list(self.good_letters_good_placement.keys()):
                     self.good_letters_good_placement[good_letters[i]].append(good_letters_good_placement[i])
+                    # Trim to unique letters only
+                    self.good_letters_good_placement[good_letters[i]] = list(set(self.good_letters_good_placement[good_letters[i]]))
                 else:
                     self.good_letters_good_placement[good_letters[i]] = []
                     self.good_letters_good_placement[good_letters[i]].append(good_letters_good_placement[i])
@@ -54,6 +56,8 @@ class Wordle:
             if good_letters_bad_placement[i] is not None:
                 if good_letters[i] in list(self.good_letters_bad_placement.keys()):
                     self.good_letters_bad_placement[good_letters[i]].append(good_letters_bad_placement[i])
+                    # Trim to unique letters only
+                    self.good_letters_bad_placement[good_letters[i]] = list(set(self.good_letters_bad_placement[good_letters[i]]))
                 else:
                     self.good_letters_bad_placement[good_letters[i]] = []
                     self.good_letters_bad_placement[good_letters[i]].append(good_letters_bad_placement[i])
