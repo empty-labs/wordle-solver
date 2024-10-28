@@ -22,7 +22,40 @@ def list_top_wordle_words(wordle):
         print("{}.) {}".format(i, word))
 
 
-def wordle_solver(wordle, show_all_eligible_words: bool=False):
+def wordle_solver(wordle):
+
+    # Collect list of eligible words given good/bad letters
+    eligible_correct_words = find_all_eligible_words(wordle)
+
+    # Print list of top words
+    find_all_top_words_from_eligible_list(wordle, eligible_correct_words)
+
+
+def find_all_top_words_from_eligible_list(wordle, eligible_correct_words):
+
+    top_eligible_correct_words_idx = []
+    top_eligible_correct_words = []
+    top_words_idx = 0
+    all_eligible_idx = 0
+
+    # Sort by top words, otherwise print alphabetically
+    for word in wordle.top_wordle_words:
+        top_words_idx += 1
+        if word in eligible_correct_words:
+            all_eligible_idx += 1
+            top_eligible_correct_words.append(word)
+            top_eligible_correct_words_idx.append(top_words_idx)
+
+            if len(top_eligible_correct_words) == 1:
+                print("Top eligible word list:")
+
+            print("{}-{}.) {}".format(all_eligible_idx, top_words_idx, word))
+
+    return
+
+
+
+def find_all_eligible_words(wordle, show_all_eligible_words: bool=False):
 
     eligible_correct_words = []
     good_keys = list(wordle.good_letters_good_placement.keys())
@@ -55,23 +88,7 @@ def wordle_solver(wordle, show_all_eligible_words: bool=False):
         print("\nEligible word count:", len(eligible_correct_words))
         print("Eligible word list:\n", eligible_correct_words)
 
-    top_eligible_correct_words_idx = []
-    top_eligible_correct_words = []
-    top_words_idx = 0
-    all_eligible_idx = 0
-
-    # Sort by top words, otherwise print alphabetically
-    for word in wordle.top_wordle_words:
-        top_words_idx += 1
-        if word in eligible_correct_words:
-            all_eligible_idx += 1
-            top_eligible_correct_words.append(word)
-            top_eligible_correct_words_idx.append(top_words_idx)
-
-            if len(top_eligible_correct_words) == 1:
-                print("Top eligible word list:")
-
-            print("{}-{}.) {}".format(all_eligible_idx, top_words_idx, word))
+    return eligible_correct_words
 
 
 def check_for_any_good_letters(wordle, word):
