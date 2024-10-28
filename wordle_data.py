@@ -3,10 +3,10 @@ import wordle_utils as wu
 
 # Constants
 # https://github.com/dwyl/english-words/blob/master/words_alpha.txt
-WORDS_FILEPATH = r"wordle_words.txt"
+WORDS_FILEPATH = r"active_data/wordle_words.txt"
 
 # https://en.wiktionary.org/wiki/Wiktionary:Frequency_lists/English/Wikipedia_(2016)#1-1000
-TOP_WORDS_FILEPATH = r"frequent_wordle_words.txt"
+TOP_WORDS_FILEPATH = r"active_data/frequent_wordle_words.txt"
 
 
 class Wordle:
