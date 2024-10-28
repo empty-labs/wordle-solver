@@ -61,7 +61,7 @@ def collect_top_wordle_words_letter_frequency(wordle, print_results: bool=False)
     return letter_frequency_dict
 
 
-def determine_optimal_words(wordle, letter_frequency_dict: dict, no_repeats: bool=False):
+def determine_optimal_words(wordle, letter_frequency_dict: dict, no_repeats: bool=False, print_results: bool=False):
 
     # Assign top word list
     if no_repeats:
@@ -95,7 +95,11 @@ def determine_optimal_words(wordle, letter_frequency_dict: dict, no_repeats: boo
     for i in range(len(top_word_list)):
         key = key_list[sorted_idxs[i]]
         sorted_optimal_word_dict[key] = optimal_word_dict[key]
-        print(key, sorted_optimal_word_dict[key])
+
+        if print_results:
+            print(key, sorted_optimal_word_dict[key])
+
+    return sorted_optimal_word_dict
 
 
 def wordle_solver(wordle):
@@ -106,10 +110,12 @@ def wordle_solver(wordle):
     # Print list of top words
     find_all_top_words_from_eligible_list(wordle, eligible_correct_words)
 
+    # Print list of top scoring words
+    find_all_top_scoring_words_from_eligible_list(wordle, eligible_correct_words)
+
 
 def find_all_top_words_from_eligible_list(wordle, eligible_correct_words):
 
-    top_eligible_correct_words_idx = []
     top_eligible_correct_words = []
     top_words_idx = 0
     all_eligible_idx = 0
@@ -120,14 +126,40 @@ def find_all_top_words_from_eligible_list(wordle, eligible_correct_words):
         if word in eligible_correct_words:
             all_eligible_idx += 1
             top_eligible_correct_words.append(word)
-            top_eligible_correct_words_idx.append(top_words_idx)
 
             if len(top_eligible_correct_words) == 1:
-                print("Top eligible word list:")
+                print("\nTop eligible word list:")
 
-            print("{}-{}.) {}".format(all_eligible_idx, top_words_idx, word))
+            print("{}-{}.) {} [{}]".format(
+                all_eligible_idx, top_words_idx, word,
+                round(wordle.top_wordle_words_dict[word], 3)))
 
-    return
+
+def find_all_top_scoring_words_from_eligible_list(wordle, eligible_correct_words):
+
+    top_eligible_correct_words = []
+    top_scoring_words_idx = 0
+    all_eligible_idx = 0
+
+    # Sort by top words, otherwise print alphabetically
+    for word in wordle.top_wordle_words_dict.keys():
+        top_scoring_words_idx += 1
+
+        top_words_idx = 0
+        for i in range(len(wordle.top_wordle_words)):
+            if word == wordle.top_wordle_words[i]:
+                top_words_idx = i
+
+        if word in eligible_correct_words:
+            all_eligible_idx += 1
+            top_eligible_correct_words.append(word)
+
+            if len(top_eligible_correct_words) == 1:
+                print("\nTop scoring eligible word list:")
+
+            print("{}-{}-{}.) {} [{}]".format(
+                all_eligible_idx, top_words_idx, top_scoring_words_idx, word,
+                round(wordle.top_wordle_words_dict[word], 3)))
 
 
 def find_all_eligible_words(wordle, show_all_eligible_words: bool=False):

@@ -15,6 +15,8 @@ class Wordle:
 
         self.wordle_words = []
         self.top_wordle_words = []
+        self.top_wordle_words_dict = {}
+
         self.guess_words = []
         self.good_letters_good_placement = {}
         self.good_letters_bad_placement = {}
@@ -24,6 +26,17 @@ class Wordle:
 
         self.wordle_words = wu.read_txt(filepath=WORDS_FILEPATH)
         self.top_wordle_words = wu.read_txt(filepath=TOP_WORDS_FILEPATH)    # Ordered by most used
+
+        # Letter frequency of top words
+        letter_frequency_dict = wu.collect_top_wordle_words_letter_frequency(wordle=self,
+                                                                             print_results=False)
+
+        # Highest scoring top words by letter frequency
+        self.top_wordle_words_dict = wu.determine_optimal_words(
+            wordle=self,
+            letter_frequency_dict=letter_frequency_dict,
+            no_repeats=False,
+            print_results=False)
 
         print("Number of top Wordle words", len(self.top_wordle_words))
         print("Number of eligible Wordle words:", len(self.wordle_words))
