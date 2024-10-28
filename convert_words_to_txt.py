@@ -1,6 +1,9 @@
 # Third party libraries
 import os
 
+# Local module
+import wordle_utils as wu
+
 # Constants
 # https://github.com/dwyl/english-words/blob/master/words_alpha.txt
 WORDS_FILEPATH = r"source_data/words_alpha.txt"
@@ -112,7 +115,7 @@ def limit_to_five_letters(word_list):
                 # Must be alphabetical letters, not random characters
                 char_length = 0
                 for char in word:
-                    if char.isalpha() and char in loweralphabets:
+                    if char.isalpha() and char in wu.LOWER_ALPHABETS:
                         char_length += 1
 
                 if char_length == 5:
