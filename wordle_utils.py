@@ -14,63 +14,64 @@ def list_top_wordle_words(wordle):
     i = 0
 
     # Sort by top words
-    for w in wordle.top_wordle_words:
+    for word in wordle.top_wordle_words:
 
         i += 1
         if i == 1:
             print("Top eligible word list:")
-        print("{}.) {}".format(i, w))
+        print("{}.) {}".format(i, word))
 
 
-def wordle_solver(wordle):
+def wordle_solver(wordle, show_all_eligible_words: bool=False):
 
     eligible_correct_words = []
     good_keys = list(wordle.good_letters_good_placement.keys())
     bad_keys = list(wordle.good_letters_bad_placement.keys())
 
-    # Find eligible words
-    for w in wordle.wordle_words:
+    # Find all eligible words
+    for word in wordle.wordle_words:
 
-        contains_good_letters = check_for_any_good_letters(wordle=wordle, word=w)
+        contains_good_letters = check_for_any_good_letters(wordle=wordle, word=word)
 
         # Check good letters
         if contains_good_letters == True:
 
             eligible_bad_keys_correct, eligible_good_keys_correct = check_eligible_letters(
-                wordle=wordle, bad_keys=bad_keys, good_keys=good_keys, word=w)
+                wordle=wordle, bad_keys=bad_keys, good_keys=good_keys, word=word)
 
             # Check all bad keys are in word at least once
-            all_bad_keys_at_least_once = check_all_keys_at_once(keys=bad_keys, word=w)
+            all_bad_keys_at_least_once = check_all_keys_at_once(keys=bad_keys, word=word)
 
             # Check all good keys are in word at least once
-            all_good_keys_at_least_once = check_all_keys_at_once(keys=good_keys, word=w)
+            all_good_keys_at_least_once = check_all_keys_at_once(keys=good_keys, word=word)
 
             if eligible_bad_keys_correct >= len(bad_keys) and \
                     all_bad_keys_at_least_once == len(bad_keys) and \
                     eligible_good_keys_correct >= len(good_keys) and \
                     all_good_keys_at_least_once == len(good_keys):
-                eligible_correct_words.append(w)
+                eligible_correct_words.append(word)
 
-    print("\nEligible word count:", len(eligible_correct_words))
-    print("Eligible word list:\n", eligible_correct_words)
+    if show_all_eligible_words:
+        print("\nEligible word count:", len(eligible_correct_words))
+        print("Eligible word list:\n", eligible_correct_words)
 
     top_eligible_correct_words_idx = []
     top_eligible_correct_words = []
-    i = 0
-    j = 0
+    top_words_idx = 0
+    all_eligible_idx = 0
 
     # Sort by top words, otherwise print alphabetically
-    for w in wordle.top_wordle_words:
-        i += 1
-        if w in eligible_correct_words:
-            j += 1
-            top_eligible_correct_words.append(w)
-            top_eligible_correct_words_idx.append(i)
+    for word in wordle.top_wordle_words:
+        top_words_idx += 1
+        if word in eligible_correct_words:
+            all_eligible_idx += 1
+            top_eligible_correct_words.append(word)
+            top_eligible_correct_words_idx.append(top_words_idx)
 
             if len(top_eligible_correct_words) == 1:
                 print("Top eligible word list:")
 
-            print("{}-{}.) {}".format(j, i, w))
+            print("{}-{}.) {}".format(all_eligible_idx, top_words_idx, word))
 
 
 def check_for_any_good_letters(wordle, word):
