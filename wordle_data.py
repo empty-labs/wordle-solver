@@ -35,7 +35,7 @@ class Wordle:
         self.top_wordle_words_dict = wu.determine_optimal_words(
             wordle=self,
             letter_frequency_dict=letter_frequency_dict,
-            no_repeats=False,
+            no_repeats=True,
             print_results=False)
 
         print("Number of top Wordle words", len(self.top_wordle_words))

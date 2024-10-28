@@ -106,7 +106,6 @@ def read_all_top_words():
 def limit_to_five_letters(word_list):
 
     wordle_words = []
-    loweralphabets = "abcdefghijklmnopqrstuvwxyz"
 
     for word in word_list:
         if type(word) is not float:  # avoid nan being considered a float with no length

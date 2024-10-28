@@ -63,36 +63,30 @@ def collect_top_wordle_words_letter_frequency(wordle, print_results: bool=False)
 
 def determine_optimal_words(wordle, letter_frequency_dict: dict, no_repeats: bool=False, print_results: bool=False):
 
-    # Assign top word list
-    if no_repeats:
-
-        top_word_list = []
-        for word in wordle.top_wordle_words:
-            if len(set(word)) == 5:
-                top_word_list.append(word)
-
-    else:
-        top_word_list = wordle.top_wordle_words
-
     optimal_word_dict = {}
 
     # Initialize entries for each word
-    for word in top_word_list:
+    for word in wordle.top_wordle_words:
         optimal_word_dict[word] = 0
 
     # Determine word score
-    for word in top_word_list:
-        for char in word:
+    for word in wordle.top_wordle_words:
+
+        this_word = word
+        if no_repeats:
+            this_word = set(word)
+
+        for char in this_word:
             optimal_word_dict[word] += letter_frequency_dict[char]
 
     # Sort in descending order, sauce = https://stackoverflow.com/questions/16486252/is-it-possible-to-use-argsort-in-descending-order
     value_list = list(optimal_word_dict.values())
-    sorted_idxs = list(np.argsort(value_list)[::-1][:len(top_word_list)])
+    sorted_idxs = list(np.argsort(value_list)[::-1][:len(wordle.top_wordle_words)])
     sorted_optimal_word_dict = {}
 
     key_list = list(optimal_word_dict.keys())
 
-    for i in range(len(top_word_list)):
+    for i in range(len(wordle.top_wordle_words)):
         key = key_list[sorted_idxs[i]]
         sorted_optimal_word_dict[key] = optimal_word_dict[key]
 
@@ -111,7 +105,7 @@ def wordle_solver(wordle):
     find_all_top_words_from_eligible_list(wordle, eligible_correct_words)
 
     # Print list of top scoring words
-    find_all_top_scoring_words_from_eligible_list(wordle, eligible_correct_words)
+    # find_all_top_scoring_words_from_eligible_list(wordle, eligible_correct_words)
 
 
 def find_all_top_words_from_eligible_list(wordle, eligible_correct_words):
@@ -148,7 +142,7 @@ def find_all_top_scoring_words_from_eligible_list(wordle, eligible_correct_words
         top_words_idx = 0
         for i in range(len(wordle.top_wordle_words)):
             if word == wordle.top_wordle_words[i]:
-                top_words_idx = i
+                top_words_idx = i + 1
 
         if word in eligible_correct_words:
             all_eligible_idx += 1
