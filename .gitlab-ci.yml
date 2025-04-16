@@ -17,6 +17,7 @@ sync_to_github:
       git rebase github/main || {
         git checkout --ours README.md
         git add README.md
+        git commit -m "Resolve README.md merge conflict during GitLab to GitHub sync"
         git rebase --continue
       }
     - git push github HEAD:main --force
