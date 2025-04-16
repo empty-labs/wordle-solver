@@ -4,8 +4,8 @@ stages:
 sync_to_github:
   stage: sync
   script:
-    - git config user.name "Matthew Taylor"
-    - git config user.email "mdt2014@gmail.com"
+    - git config user.name "GitLab CI"
+    - git config user.email "ci@example.com"
     - git remote remove github || true
     - git remote add github https://$CI_PROJECT_NAMESPACE:$GITHUB_TOKEN@github.com/empty-labs/wordle-solver.git
     - git fetch github main
@@ -17,7 +17,12 @@ sync_to_github:
           git checkout --ours "$file" || true
           git add "$file"
         done
-        git commit -m "Resolve merge conflicts during GitLab to GitHub sync"
+        # Only commit if there are staged changes
+        if ! git diff --cached --quiet; then
+          git commit -m "Resolve merge conflicts during GitLab to GitHub sync"
+        else
+          echo "✅ No commit needed after conflict resolution"
+        fi
         git rebase --continue || echo "⚠️ Rebase still failed. Manual fix may be required."
       }
     - git push github HEAD:main --force
