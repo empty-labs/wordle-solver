@@ -4,27 +4,9 @@ stages:
 sync_to_github:
   stage: sync
   script:
-#    - git remote remove github || true
-#    - git remote add github https://$CI_PROJECT_NAMESPACE:$GITHUB_TOKEN@github.com/empty-labs/wordle-solver.git
-#    - git push github HEAD:$CI_COMMIT_REF_NAME
-#    - git push github --tags
-    - git config user.name "Matthew Taylor"
-    - git config user.email "mdt2014@gmail.com"
     - git remote remove github || true
     - git remote add github https://$CI_PROJECT_NAMESPACE:$GITHUB_TOKEN@github.com/empty-labs/wordle-solver.git
-    - git fetch github main
-    - |
-      git rebase github/main || {
-        echo "🔀 Starting manual conflict resolution..."
-        git diff --name-only --diff-filter=U | while read file; do
-          echo "📄 Resolving conflict in $file by preferring ours"
-          git checkout --ours "$file" || true
-          git add "$file"
-        done
-        git commit -m "Resolve merge conflicts during GitLab to GitHub sync"
-        git rebase --continue || echo "⚠️ Rebase still failed. Manual fix may be required."
-      }
-    - git push github HEAD:main --force
-    - git push github --tags --force
+    - git push github HEAD:$CI_COMMIT_REF_NAME
+    - git push github --tags
   only:
     - main
