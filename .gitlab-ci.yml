@@ -4,9 +4,23 @@ stages:
 sync_to_github:
   stage: sync
   script:
-    - git remote remove github || true
-    - git remote add github https://$CI_PROJECT_NAMESPACE:$GITHUB_TOKEN@github.com/empty-labs/wordle-solver.git
-    - git push github HEAD:$CI_COMMIT_REF_NAME
-    - git push github --tags
+#    - git remote remove github || true
+#    - git remote add github https://$CI_PROJECT_NAMESPACE:$GITHUB_TOKEN@github.com/empty-labs/wordle-solver.git
+#    - git push github HEAD:$CI_COMMIT_REF_NAME
+#    - git push github --tags
+    - git config user.name "GitLab CI"
+      - git config user.email "ci@example.com"
+      - git remote remove github || true
+      - git remote add github https://$CI_PROJECT_NAMESPACE:$GITHUB_TOKEN@github.com/empty-labs/wordle-solver.git
+      - git fetch github main
+      # Automatically resolve README conflicts by preferring GitLab version
+      - |
+      git rebase github/main || (
+      git checkout --ours README.md
+      git add README.md
+      git rebase --continue
+      )
+      - git push github HEAD:main --force
+      - git push github --tags --force
   only:
     - main
