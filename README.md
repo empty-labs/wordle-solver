@@ -4,7 +4,7 @@ This is a NLP-adjacent project that can be used to support your daily Wordle clu
 
 # Step-by-Step
 
-TODO: Add screenshot of example
+TODO: Add screenshot of example here.
 
 ## Conda environment
 
