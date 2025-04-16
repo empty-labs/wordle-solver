@@ -6,6 +6,8 @@ sync_to_github:
   script:
     - git remote remove github || true
     - git remote add github https://$CI_PROJECT_NAMESPACE:$GITHUB_TOKEN@github.com/empty-labs/wordle-solver.git
+    - git fetch github main
+    - git rebase github/main
     - git push github HEAD:$CI_COMMIT_REF_NAME
     - git push github --tags
   only:
