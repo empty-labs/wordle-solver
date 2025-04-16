@@ -2,7 +2,6 @@
 
 This is a NLP-adjacent project that can be used to support your daily Wordle clue guesses.  Each time you make a guess, you can add the result to "Wordle Notebook" to improve your chances at guessing the correct 5-letter word by using Wikipedia's most frequent words list.
 
-
 # Step-by-Step
 
 TODO: Add screenshot of example
