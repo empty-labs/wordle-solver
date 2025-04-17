@@ -1,4 +1,4 @@
-![](empty-labs-logo-wide.png)
+![](Data/Images/empty-labs-logo-wide.png)
 
 # Wordle Solver
 
