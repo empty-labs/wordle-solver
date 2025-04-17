@@ -6,7 +6,31 @@ This is a NLP-adjacent project that can be used to support your daily Wordle clu
 
 # Step-by-Step
 
-TODO: Add this screenshot of example.
+### Wordle Word List
+
+In order to generate a new word list (already included in Data/Active) you can follow the process in the "Create Wordle Word Txt Files" notebook by running these 2 cells.
+![](Data/Images/create-wordle-word-lists-example.png)
+
+### Wordle Top Words
+
+To determine the most frequently used 5-letter words, run the first 2 cells in "Wordle Notebook".
+![](Data/Images/wordle-top-words-example.png)
+
+### Wordle Guess
+To play the Wordle game with a 5-letter word guess, follow the examples in "Wordle Notebook".  See this example for the 9.8.25 clue.
+
+![](Data/Images/wordle-guess-example.png)
+
+1. You need to start by declaring a Wordle object and using the set_data() function.
+2. Submit a guess in the Wordle game (e.g. "ideas") and provide the guess in the wordle_guess() function using "guess_word" parameter.
+3. Include which letters are correct by in the "good_letters" parameter.
+4. For the correct letters with incorrect placement, include their positions under the "good_letters_bad_placement" parameter (0-based indexing, [0,1,2,3,4])
+5. For the correct letters with correct placement, include their positions under the "good_letters_good_placement" parameter (0-based indexing, [0,1,2,3,4])
+6. If you have a combination of correct letters in both incorrect and correct placements, provide a "None" value when the good letter entry doesn't apply to the good placement or the bad placement list (see example below for 4th guess on 9.7.25 clue).
+![](Data/Images/wordle-guess-example-2.png)
+
+Here's the result of the last 2 guesses for the 9.8.25 clue:
+![](Data/Images/wordle-guess-example-1.png)
 
 ## Conda environment
 
