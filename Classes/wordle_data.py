@@ -1,12 +1,12 @@
 # Local libraries
-import wordle_utils as wu
+from Tools import wordle_utils as wu
 
 # Constants
 # https://github.com/dwyl/english-words/blob/master/words_alpha.txt
-WORDS_FILEPATH = r"wordle_words.txt"
+WORDS_FILEPATH = r"Data/Active/wordle_words.txt"
 
-# https://en.wiktionary.org/wiki/Wiktionary:Frequency_lists/English/Wikipedia_(2016)#1-1000
-TOP_WORDS_FILEPATH = r"frequent_wordle_words.txt"
+# https://en.wiktionary.org/wiki/Wiktionary:Frequency_lists/English/Wikipedia_(2016)#1-157000
+TOP_WORDS_FILEPATH = r"Data/Active/frequent_wordle_words.txt"
 
 
 class Wordle:
@@ -72,4 +72,3 @@ class Wordle:
         print('Good placement dictionary', self.good_letters_good_placement)
         print('Bad placement dictionary', self.good_letters_bad_placement)
         print('Bad letters', self.bad_letters)
-
