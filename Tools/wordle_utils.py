@@ -1,3 +1,6 @@
+from wordfreq import word_frequency
+
+
 def read_txt(filepath):
     """Read text files for word options"""
     data = []
@@ -16,6 +19,17 @@ def list_top_wordle_words(wordle, show_words: bool=False):
         # Sort by top words
         for i, w in enumerate(wordle.top_wordle_words):
             print("{}.) {}".format(i+1, w))
+
+
+def rank_candidates_wordfreq(candidates):
+    """
+    Rank candidate words by their frequency in English using wordfreq.
+    More common words come first.
+    """
+    scored = [(word, word_frequency(word, "en")) for word in candidates]
+    # Sort descending by frequency
+    ranked = sorted(scored, key=lambda x: x[1], reverse=True)
+    return [w for w, _ in ranked]
 
 
 def wordle_solver(wordle, show_eligible_words_unsorted: bool=False):
@@ -53,7 +67,6 @@ def wordle_solver(wordle, show_eligible_words_unsorted: bool=False):
         print("Eligible word list:\n", eligible_correct_words)
 
     top_eligible_correct_words = []
-    j = 0
 
     # Sort by top words, otherwise print alphabetically
     for i, w in enumerate(wordle.top_wordle_words):
@@ -62,12 +75,19 @@ def wordle_solver(wordle, show_eligible_words_unsorted: bool=False):
             top_eligible_correct_words.append(w)
             n = len(top_eligible_correct_words)
             if n == 1:
-                print("Top eligible word list:")
+                print("\nTop eligible word list:")
 
-            print("{}-{}.) {}".format(n, i+1, w))
+            if n <= 25:  # Stop sharing after top 25 words
+                print("{}-{}.) {}".format(n, i+1, w))
 
-            if n == 25:
-                break  # Stop sharing after top 25 words
+    # Rank eligible words using wordfreq package
+    if top_eligible_correct_words:
+        ranked_eligible_correct_words = rank_candidates_wordfreq(candidates=top_eligible_correct_words)
+        for i, w in enumerate(ranked_eligible_correct_words):
+            if i == 0:
+                print("\nRanked eligible word list (wordfreq):")
+            if i < 25:  # Stop sharing after top 25 words
+                print(f"{i+1}.) {w}")
 
 
 def check_for_any_good_letters(wordle, word):
