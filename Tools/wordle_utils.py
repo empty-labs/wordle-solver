@@ -66,6 +66,9 @@ def wordle_solver(wordle, show_eligible_words_unsorted: bool=False):
 
             print("{}-{}.) {}".format(n, i+1, w))
 
+            if n == 25:
+                break  # Stop sharing after top 25 words
+
 
 def check_for_any_good_letters(wordle, word):
 
