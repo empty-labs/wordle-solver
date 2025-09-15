@@ -37,13 +37,18 @@ Here's the result of the last 2 guesses for the 9.8.25 clue:
 When setting up the project, consider using a conda environment to isolate the required packages.
 
 1. Create new conda environment (you can also use PyCharm's interpreter settings to create your conda environment instead of using command line here)
-```
+```commandline
 conda env create --name wordle-solver
 ```
-2. Set up jupyter for conda environment ([sauce](https://stackoverflow.com/questions/39604271/conda-environments-not-showing-up-in-jupyter-notebook))
+2. Add packages to conda
+```commandline
+conda install conda-forge::wordfreq
 ```
+3. Set up jupyter for conda environment ([sauce](https://stackoverflow.com/questions/39604271/conda-environments-not-showing-up-in-jupyter-notebook))
+```commandline
 pip install jupyter ipykernel
 ```
-```
+```commandline
 python -m ipykernel install --user --name wordle-solver --display-name "wordle-solver"
 ```
+
