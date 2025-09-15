@@ -1,5 +1,5 @@
 def read_txt(filepath):
-
+    """Read text files for word options"""
     data = []
     f = open(filepath, "r")
 
@@ -19,6 +19,7 @@ def list_top_wordle_words(wordle, show_words: bool=False):
 
 
 def wordle_solver(wordle, show_eligible_words_unsorted: bool=False):
+    """Solve wordle with eligible word choices"""
 
     eligible_correct_words = []
     good_keys = list(wordle.good_letters_good_placement.keys())
@@ -51,23 +52,19 @@ def wordle_solver(wordle, show_eligible_words_unsorted: bool=False):
         print("\nEligible word count:", len(eligible_correct_words))
         print("Eligible word list:\n", eligible_correct_words)
 
-    top_eligible_correct_words_idx = []
     top_eligible_correct_words = []
-    i = 0
     j = 0
 
     # Sort by top words, otherwise print alphabetically
-    for w in wordle.top_wordle_words:
-        i += 1
+    for i, w in enumerate(wordle.top_wordle_words):
         if w in eligible_correct_words:
-            j += 1
-            top_eligible_correct_words.append(w)
-            top_eligible_correct_words_idx.append(i)
 
-            if len(top_eligible_correct_words) == 1:
+            top_eligible_correct_words.append(w)
+            n = len(top_eligible_correct_words)
+            if n == 1:
                 print("Top eligible word list:")
 
-            print("{}-{}.) {}".format(j, i, w))
+            print("{}-{}.) {}".format(n, i+1, w))
 
 
 def check_for_any_good_letters(wordle, word):
