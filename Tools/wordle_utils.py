@@ -9,17 +9,13 @@ def read_txt(filepath):
     return data
 
 
-def list_top_wordle_words(wordle):
-
-    i = 0
-
-    # Sort by top words
-    for w in wordle.top_wordle_words:
-
-        i += 1
-        if i == 1:
-            print("Top eligible word list:")
-        print("{}.) {}".format(i, w))
+def list_top_wordle_words(wordle, show_words: bool=True):
+    """Show top words from Wiki list"""
+    if show_words:
+        print("Top eligible word list:")
+        # Sort by top words
+        for i, w in enumerate(wordle.top_wordle_words):
+            print("{}.) {}".format(i+1, w))
 
 
 def wordle_solver(wordle):
