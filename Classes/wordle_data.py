@@ -69,6 +69,6 @@ class Wordle:
 
         self.bad_letters = list(set(self.bad_letters))
 
-        print('Good placement dictionary', self.good_letters_good_placement)
-        print('Bad placement dictionary', self.good_letters_bad_placement)
-        print('Bad letters', self.bad_letters)
+        print('Good placement dictionary:', self.good_letters_good_placement)
+        print('Bad placement dictionary:', self.good_letters_bad_placement)
+        print('Bad letters:', self.bad_letters)
