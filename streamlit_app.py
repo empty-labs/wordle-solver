@@ -85,13 +85,51 @@ for i, col in enumerate(cols):
         unsafe_allow_html=True
     )
 
+# Current guess
 guess = "".join(selected_letters)
 
-# Guess #1
-correct_word = 'death'
-wdl.wordle_guess(guess_word=guess,
-                 good_letters=['d', 'e'],
-                 good_letters_good_placement=[0, 1])
-wu.wordle_solver(wordle=wdl)
+st.write("")  # Linebreak
 
-st.markdown(f"Guess: {guess}")
+# Run simulation
+run_button = st.button("Run Wordle Solver")
+
+if run_button:
+    st.subheader("Wordle Solver Results")
+
+    with st.spinner("Running Wordle Solver..."):
+
+        good_letters = []
+        good_letters_good_placement = []
+        good_letters_bad_placement = []
+
+        for i, letter_info in enumerate(st.session_state.letters):
+            # Good letters, bad placement
+            if letter_info["color"] == "lightyellow":
+                good_letters.append(letter_info["letter"])
+                good_letters_bad_placement.append(i)
+                good_letters_good_placement.append(None)
+
+            # Good letters, good placement
+            elif letter_info["color"] == "green":
+                good_letters.append(letter_info["letter"])
+                good_letters_bad_placement.append(None)
+                good_letters_good_placement.append(i)
+
+        if not good_letters:
+            good_letters = None
+
+        if not good_letters_good_placement:
+            good_letters_good_placement = None
+
+        if not good_letters_bad_placement:
+            good_letters_bad_placement = None
+
+        wdl.wordle_guess(guess_word=guess,
+                         good_letters=good_letters,
+                         good_letters_good_placement=good_letters_good_placement,
+                         good_letters_bad_placement=good_letters_bad_placement,
+                         debug=False)
+        results = wu.wordle_solver(wordle=wdl)
+
+        st.markdown(f"### Guess: {guess}")
+        st.markdown(results.replace("\n", "  \n"))  # Replace newlines with streamlit-friendly newlines
