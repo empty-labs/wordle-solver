@@ -129,7 +129,7 @@ if run_button:
                          good_letters_good_placement=good_letters_good_placement,
                          good_letters_bad_placement=good_letters_bad_placement,
                          debug=False)
-        results = wu.wordle_solver(wordle=wdl)
+        results = wu.wordle_solver(wordle=wdl, print_wiki_words=False)
 
         st.markdown(f"### Guess: {guess}")
         st.markdown(results.replace("\n", "  \n"))  # Replace newlines with streamlit-friendly newlines

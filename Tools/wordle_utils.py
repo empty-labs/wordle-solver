@@ -32,7 +32,7 @@ def rank_candidates_wordfreq(candidates):
     return [w for w, _ in ranked]
 
 
-def wordle_solver(wordle, show_eligible_words_unsorted: bool=False, n_words: int=10):
+def wordle_solver(wordle, show_eligible_words_unsorted: bool=False, n_words: int=10, print_wiki_words: bool=True):
     """Solve wordle with eligible word choices"""
 
     eligible_correct_words = []
@@ -74,12 +74,15 @@ def wordle_solver(wordle, show_eligible_words_unsorted: bool=False, n_words: int
         if w in eligible_correct_words:
 
             top_eligible_correct_words.append(w)
-            n = len(top_eligible_correct_words)
-            if n == 1:
-                word_list_results += "\nTop eligible word list:"
 
-            if n <= n_words:  # Stop sharing after top x words
-                word_list_results += "\n{}-{}.) {}".format(n, i+1, w)
+            # Include/Exclude printing in Wikipedia order
+            if print_wiki_words:
+                n = len(top_eligible_correct_words)
+                if n == 1:
+                    word_list_results += "\nTop eligible word list:"
+
+                if n <= n_words:  # Stop sharing after top x words
+                    word_list_results += "\n{}-{}.) {}".format(n, i+1, w)
 
     # Rank eligible words using wordfreq package
     if top_eligible_correct_words:
