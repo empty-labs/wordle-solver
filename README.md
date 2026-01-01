@@ -42,7 +42,8 @@ conda env create --name wordle-solver
 ```
 2. Add packages to conda
 ```commandline
-conda install conda-forge::wordfreq
+conda install conda-forge::wordfreq -y
+conda install conda-forge::streamlit -y
 ```
 3. Set up jupyter for conda environment ([sauce](https://stackoverflow.com/questions/39604271/conda-environments-not-showing-up-in-jupyter-notebook))
 ```commandline
@@ -52,3 +53,20 @@ pip install jupyter ipykernel
 python -m ipykernel install --user --name wordle-solver --display-name "wordle-solver"
 ```
 
+## Streamlit Deployment
+1. Create requirements list.  Prune as needed.
+```commandline
+pip list --format=freeze > requirements.txt
+```
+2. Test minimal environment
+```commandline
+python -m venv test_env
+source test_env/bin/activate
+pip install -r requirements.txt
+streamlit run app.py
+```
+3. Delete test environment
+```commandline
+deactivate
+rm -rf test_env
+```
