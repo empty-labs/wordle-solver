@@ -20,13 +20,14 @@ class Wordle:
         self.good_letters_bad_placement = {}
         self.bad_letters = []
 
-    def set_data(self):
+    def set_data(self, debug: bool = False):
 
         self.wordle_words = wu.read_txt(filepath=WORDS_FILEPATH)
         self.top_wordle_words = wu.read_txt(filepath=TOP_WORDS_FILEPATH)    # Ordered by most used
 
-        print("Number of top Wordle words", len(self.top_wordle_words))
-        print("Number of eligible Wordle words:", len(self.wordle_words))
+        if debug:
+            print("Number of top Wordle words", len(self.top_wordle_words))
+            print("Number of eligible Wordle words:", len(self.wordle_words))
 
     def wordle_guess(self, guess_word: str, good_letters: list = [], good_letters_bad_placement: list = [],
                      good_letters_good_placement: list = []):
