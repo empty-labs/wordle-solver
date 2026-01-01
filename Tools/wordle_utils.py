@@ -67,6 +67,7 @@ def wordle_solver(wordle, show_eligible_words_unsorted: bool=False):
         print("Eligible word list:\n", eligible_correct_words)
 
     top_eligible_correct_words = []
+    word_list_results = ""
 
     # Sort by top words, otherwise print alphabetically
     for i, w in enumerate(wordle.top_wordle_words):
@@ -75,19 +76,21 @@ def wordle_solver(wordle, show_eligible_words_unsorted: bool=False):
             top_eligible_correct_words.append(w)
             n = len(top_eligible_correct_words)
             if n == 1:
-                print("\nTop eligible word list:")
+                word_list_results += "\nTop eligible word list:"
 
             if n <= 25:  # Stop sharing after top 25 words
-                print("{}-{}.) {}".format(n, i+1, w))
+                word_list_results += "{}-{}.) {}".format(n, i+1, w)
 
     # Rank eligible words using wordfreq package
     if top_eligible_correct_words:
         ranked_eligible_correct_words = rank_candidates_wordfreq(candidates=top_eligible_correct_words)
         for i, w in enumerate(ranked_eligible_correct_words):
             if i == 0:
-                print("\nRanked eligible word list (wordfreq):")
+                word_list_results += "\nRanked eligible word list (wordfreq):"
             if i < 25:  # Stop sharing after top 25 words
-                print(f"{i+1}.) {w}")
+                word_list_results += f"{i+1}.) {w}"
+
+    return word_list_results
 
 
 def check_for_any_good_letters(wordle, word):

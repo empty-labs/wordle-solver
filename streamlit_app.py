@@ -91,7 +91,7 @@ guess = "".join(selected_letters)
 correct_word = 'death'
 wdl.wordle_guess(guess_word=guess,
                  good_letters=['d', 'e'],
-                 good_letters_good_placement=[1, 2])
+                 good_letters_good_placement=[0, 1])
 wu.wordle_solver(wordle=wdl)
 
 st.markdown(f"Guess: {guess}")
