@@ -1,17 +1,9 @@
 # Local libraries
-import Classes.wordle_data as wd
-import Tools.wordle_utils as wu
+import Tools.streamlit_utils as stu
 
 # Third party packages
 import streamlit as st
-import string
 
-
-uppercase_letters = string.ascii_uppercase
-letters = [l for l in uppercase_letters]
-
-wdl = wd.Wordle()
-wdl.set_data()
 
 # Page config
 st.set_page_config(
@@ -37,116 +29,23 @@ st.markdown("Gray = letter not found")
 st.markdown("Yellow = good letter, wrong position")
 st.markdown("Green = good letter, correct position")
 
-st.header("Round #1")
-col1, col2, col3, col4, col5 = st.columns(5)
+# Simplified for just 1 round
+rd = 1
+stu.generate_round_section(rd)
+stu.run_wordle_solver(rd)
 
-with col1:
-    selected_letter_1 = st.selectbox(
-        "Letter #1:",
-        letters,
-        index=0
-    )
+if 'round' in st.session_state:
+    round_key = f"round_{rd}"
+    state = st.session_state.round[round_key]
 
-with col2:
-    selected_letter_2 = st.selectbox(
-        "Letter #2:",
-        letters,
-        index=0
-    )
+    if state.get("solver_ran"):
+        st.subheader("Wordle Solver Results")
+        st.markdown(f"### Guess: {state['guess']}")
+        st.markdown(state["results"].replace("\n", "  \n"))
 
-with col3:
-    selected_letter_3 = st.selectbox(
-        "Letter #3:",
-        letters,
-        index=0
-    )
-
-with col4:
-    selected_letter_4 = st.selectbox(
-        "Letter #4:",
-        letters,
-        index=0
-    )
-
-with col5:
-    selected_letter_5 = st.selectbox(
-        "Letter #5:",
-        letters,
-        index=0
-    )
-
-selected_letters = [selected_letter_1, selected_letter_2, selected_letter_3, selected_letter_4, selected_letter_5]
-
-# Initialize state
-if "letters" not in st.session_state:
-    st.session_state.letters = [{"letter": "", "color": "gray"} for letter in selected_letters]
-
-# Color cycle
-color_cycle = {"gray": "lightyellow", "lightyellow": "green", "green": "gray"}
-
-# Create columns for each letter
-cols = st.columns(5)
-
-for i, col in enumerate(cols):
-    letter_info = st.session_state.letters[i]
-    letter_info["letter"] = selected_letters[i]
-
-    # Add a unique key for each button to avoid StreamlitDuplicateElementId
-    if col.button("Change State", key=f"letter_btn_{i}"):
-        # Cycle the color
-        letter_info["color"] = color_cycle[letter_info["color"]]
-
-    # Show the letter with its background color
-    col.markdown(
-        f"<div style='background-color:{letter_info['color']}; color:black; padding:20px; text-align:center; font-weight:bold; font-size:20px;'>{letter_info['letter']}</div>",
-        unsafe_allow_html=True
-    )
-
-# Current guess
-guess = "".join(selected_letters)
-
-st.write("")  # Linebreak
-
-# Run simulation
-run_button = st.button("Run Wordle Solver")
-
-if run_button:
-    st.subheader("Wordle Solver Results")
-
-    with st.spinner("Running Wordle Solver..."):
-
-        good_letters = []
-        good_letters_good_placement = []
-        good_letters_bad_placement = []
-
-        for i, letter_info in enumerate(st.session_state.letters):
-            # Good letters, bad placement
-            if letter_info["color"] == "lightyellow":
-                good_letters.append(letter_info["letter"])
-                good_letters_bad_placement.append(i)
-                good_letters_good_placement.append(None)
-
-            # Good letters, good placement
-            elif letter_info["color"] == "green":
-                good_letters.append(letter_info["letter"])
-                good_letters_bad_placement.append(None)
-                good_letters_good_placement.append(i)
-
-        if not good_letters:
-            good_letters = None
-
-        if not good_letters_good_placement:
-            good_letters_good_placement = None
-
-        if not good_letters_bad_placement:
-            good_letters_bad_placement = None
-
-        wdl.wordle_guess(guess_word=guess,
-                         good_letters=good_letters,
-                         good_letters_good_placement=good_letters_good_placement,
-                         good_letters_bad_placement=good_letters_bad_placement,
-                         debug=False)
-        results = wu.wordle_solver(wordle=wdl, print_wiki_words=False)
-
-        st.markdown(f"### Guess: {guess}")
-        st.markdown(results.replace("\n", "  \n"))  # Replace newlines with streamlit-friendly newlines
+        if len(st.session_state["wdl"].bad_letters) > 0:
+            st.subheader("Bad Letters")
+            bad_letters_string = ""
+            for i, a in enumerate(st.session_state["wdl"].bad_letters):
+                bad_letters_string += f"\n{i+1}. {a.upper()}"
+            st.markdown(bad_letters_string.replace("\n", "  \n"))
