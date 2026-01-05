@@ -120,12 +120,10 @@ def run_wordle_solver(rd: int):
                 good_letters_good_placement=good_letters_good_placement,
                 good_letters_bad_placement=good_letters_bad_placement,
                 debug=False)
-            results = wu.wordle_solver(
+            state["results"] = wu.wordle_solver(
                 wordle=st.session_state['wdl'],
                 print_wiki_words=False)
 
-            state["solver_results"] = results
-            state["solver_guess"] = state["guess"]
             state["solver_ran"] = True
 
             # if rd < 1 and st.session_state.active_rounds == rd:

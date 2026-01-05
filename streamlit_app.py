@@ -56,5 +56,5 @@ if 'round' in st.session_state:
 
     if state.get("solver_ran"):
         st.subheader("Wordle Solver Results")
-        st.markdown(f"### Guess: {state['solver_guess']}")
-        st.markdown(state["solver_results"].replace("\n", "  \n"))
+        st.markdown(f"### Guess: {state['guess']}")
+        st.markdown(state["results"].replace("\n", "  \n"))
