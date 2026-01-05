@@ -13,6 +13,8 @@ color_cycle = {colors[0]: colors[1], colors[1]: colors[2], colors[2]: colors[0]}
 
 def generate_round_section(rd: int):
 
+    st.divider()
+
     # Initialize state
     if "round" not in st.session_state:
         st.session_state["round"] = {}
@@ -23,6 +25,7 @@ def generate_round_section(rd: int):
     # Initialize section state
     if round_key not in st.session_state.round:
         st.session_state.round[round_key] = {}
+        st.markdown(f"{rd} {round_key}")
 
     state = st.session_state.round[round_key]
 
@@ -36,7 +39,7 @@ def generate_round_section(rd: int):
 
         with col:
             state["selected_letters"].append(st.selectbox(
-                f"Letter #{i}:",
+                f"Letter #{rd}-{i+1}:",
                 letters,
                 index=0
             ))
@@ -45,14 +48,19 @@ def generate_round_section(rd: int):
     state["letters"] = [{"letter": "", "color": colors[0]} for letter in state["selected_letters"]]
 
     # Create columns for each letter
-    cols = st.columns(5)
+    state_cols = st.columns(5)
 
-    for i, col in enumerate(cols):
+    state["state_cols"] = []
+
+    for col in state_cols:
+        state["state_cols"].append(col)
+
+    for i, col in enumerate(state["state_cols"]):
         letter_info = state["letters"][i]
         letter_info["letter"] = state["selected_letters"][i]
 
         # Add a unique key for each button to avoid StreamlitDuplicateElementId
-        if col.button("Change State", key=f"letter_btn_{i}"):
+        if col.button("Change State", key=f"letter_btn_{rd}_{i}"):
             # Cycle the color
             letter_info["color"] = color_cycle[letter_info["color"]]
 
@@ -65,14 +73,16 @@ def generate_round_section(rd: int):
     # Current guess
     state["guess"] = "".join(state["selected_letters"])
 
-    return state
 
+def run_wordle_solver(rd: int, wdl):
 
-def run_wordle_solver(state, wdl):
+    round_key = f"Round {rd}"
+    state = st.session_state.round[round_key]
+
     st.write("")  # Linebreak
 
     # Run simulation
-    run_button = st.button("Run Wordle Solver")
+    run_button = st.button("Run Wordle Solver", key=f"run_btn_{rd}")
 
     if run_button:
         st.subheader("Wordle Solver Results")
@@ -114,3 +124,9 @@ def run_wordle_solver(state, wdl):
 
             st.markdown(f"### Guess: {state["guess"]}")
             st.markdown(results.replace("\n", "  \n"))  # Replace newlines with streamlit-friendly newlines
+
+            state['wdl'] = wdl
+
+            if rd < 5:
+                generate_round_section(rd=rd+1)
+                run_wordle_solver(rd=rd+1, wdl=wdl)
