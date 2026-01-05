@@ -1,4 +1,5 @@
 # Local libraries
+import Classes.wordle_data as wd
 import Tools.wordle_utils as wu
 
 # Third party packages
@@ -19,8 +20,8 @@ def generate_round_section(rd: int):
     if "round" not in st.session_state:
         st.session_state["round"] = {}
 
-    round_key = f"Round {rd}"
-    st.header(round_key)
+    round_key = f"round_{rd}"
+    st.header(f"Round {rd}")
 
     # Initialize section state
     if round_key not in st.session_state.round:
@@ -30,34 +31,28 @@ def generate_round_section(rd: int):
     state = st.session_state.round[round_key]
 
     choice_cols = st.columns(5)
-
-    state["choice_cols"] = []
-    state["selected_letters"] = []
+    selected_letters = []
 
     for i, col in enumerate(choice_cols):
-        state["choice_cols"].append(col)
 
         with col:
-            state["selected_letters"].append(st.selectbox(
-                f"Letter #{rd}-{i+1}:",
+            selected_letters.append(st.selectbox(
+                f"Letter #{rd}:",
                 letters,
+                key=f"round_{rd}_letter_{i}",
                 index=0
             ))
 
     # Initialize state
-    state["letters"] = [{"letter": "", "color": colors[0]} for letter in state["selected_letters"]]
+    if "letters" not in state:
+        state["letters"] = [{"letter": "", "color": colors[0]} for _ in range(5)]
 
     # Create columns for each letter
     state_cols = st.columns(5)
 
-    state["state_cols"] = []
-
-    for col in state_cols:
-        state["state_cols"].append(col)
-
-    for i, col in enumerate(state["state_cols"]):
+    for i, col in enumerate(state_cols):
         letter_info = state["letters"][i]
-        letter_info["letter"] = state["selected_letters"][i]
+        letter_info["letter"] = selected_letters[i]
 
         # Add a unique key for each button to avoid StreamlitDuplicateElementId
         if col.button("Change State", key=f"letter_btn_{rd}_{i}"):
@@ -71,13 +66,18 @@ def generate_round_section(rd: int):
         )
 
     # Current guess
-    state["guess"] = "".join(state["selected_letters"])
+    state["guess"] = "".join(selected_letters)
 
 
-def run_wordle_solver(rd: int, wdl):
+def run_wordle_solver(rd: int):
 
-    round_key = f"Round {rd}"
+    round_key = f"round_{rd}"
     state = st.session_state.round[round_key]
+
+    if 'wdl' not in st.session_state:
+        wdl = wd.Wordle()
+        wdl.set_data()
+        st.session_state['wdl'] = wdl
 
     st.write("")  # Linebreak
 
@@ -85,7 +85,6 @@ def run_wordle_solver(rd: int, wdl):
     run_button = st.button("Run Wordle Solver", key=f"run_btn_{rd}")
 
     if run_button:
-        st.subheader("Wordle Solver Results")
 
         with st.spinner("Running Wordle Solver..."):
 
@@ -115,18 +114,21 @@ def run_wordle_solver(rd: int, wdl):
             if not good_letters_bad_placement:
                 good_letters_bad_placement = None
 
-            wdl.wordle_guess(guess_word=state["guess"],
-                             good_letters=good_letters,
-                             good_letters_good_placement=good_letters_good_placement,
-                             good_letters_bad_placement=good_letters_bad_placement,
-                             debug=False)
-            results = wu.wordle_solver(wordle=wdl, print_wiki_words=False)
+            st.session_state['wdl'].wordle_guess(
+                guess_word=state["guess"],
+                good_letters=good_letters,
+                good_letters_good_placement=good_letters_good_placement,
+                good_letters_bad_placement=good_letters_bad_placement,
+                debug=False)
+            results = wu.wordle_solver(
+                wordle=st.session_state['wdl'],
+                print_wiki_words=False)
 
-            st.markdown(f"### Guess: {state["guess"]}")
-            st.markdown(results.replace("\n", "  \n"))  # Replace newlines with streamlit-friendly newlines
+            state["solver_results"] = results
+            state["solver_guess"] = state["guess"]
+            state["solver_ran"] = True
 
-            state['wdl'] = wdl
-
-            if rd < 5:
-                generate_round_section(rd=rd+1)
-                run_wordle_solver(rd=rd+1, wdl=wdl)
+            # if rd < 1 and st.session_state.active_rounds == rd:
+            #     st.session_state.active_rounds += 1
+            #
+            # st.rerun()

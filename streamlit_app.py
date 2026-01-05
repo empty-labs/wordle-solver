@@ -1,13 +1,9 @@
 # Local libraries
-import Classes.wordle_data as wd
 import Tools.streamlit_utils as stu
 
 # Third party packages
 import streamlit as st
 
-
-wdl = wd.Wordle()
-wdl.set_data()
 
 # Page config
 st.set_page_config(
@@ -33,5 +29,32 @@ st.markdown("Gray = letter not found")
 st.markdown("Yellow = good letter, wrong position")
 st.markdown("Green = good letter, correct position")
 
-stu.generate_round_section(rd=1)
-stu.run_wordle_solver(rd=1, wdl=wdl)
+if "active_rounds" not in st.session_state:
+    st.session_state.active_rounds = 1
+
+# for rd in range(1, st.session_state.active_rounds + 1):
+#
+#     stu.generate_round_section(rd)
+#     stu.run_wordle_solver(rd)
+#
+#     if 'round' in st.session_state:
+#         round_key = f"round_{rd}"
+#         state = st.session_state.round[round_key]
+#
+#         if state.get("solver_ran"):
+#             st.subheader("Wordle Solver Results")
+#             st.markdown(f"### Guess: {state['solver_guess']}")
+#             st.markdown(state["solver_results"].replace("\n", "  \n"))
+
+rd = 1
+stu.generate_round_section(rd)
+stu.run_wordle_solver(rd)
+
+if 'round' in st.session_state:
+    round_key = f"round_{rd}"
+    state = st.session_state.round[round_key]
+
+    if state.get("solver_ran"):
+        st.subheader("Wordle Solver Results")
+        st.markdown(f"### Guess: {state['solver_guess']}")
+        st.markdown(state["solver_results"].replace("\n", "  \n"))
