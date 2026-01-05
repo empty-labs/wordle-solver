@@ -74,6 +74,10 @@ class Wordle:
             for a in guess_word:
                 if a not in good_letters:
                     self.bad_letters.append(a)
+                else:
+                    # Remove letter if now deemed good
+                    if a in self.bad_letters:
+                        self.bad_letters.remove(a)
         else:
             self.bad_letters = [a for a in guess_word]
 

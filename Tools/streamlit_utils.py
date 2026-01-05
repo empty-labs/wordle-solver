@@ -21,12 +21,11 @@ def generate_round_section(rd: int):
         st.session_state["round"] = {}
 
     round_key = f"round_{rd}"
-    st.header(f"Round {rd}")
+    st.header("Wordle Solver Tool")
 
     # Initialize section state
     if round_key not in st.session_state.round:
         st.session_state.round[round_key] = {}
-        st.markdown(f"{rd} {round_key}")
 
     state = st.session_state.round[round_key]
 
@@ -126,7 +125,14 @@ def run_wordle_solver(rd: int):
 
             state["solver_ran"] = True
 
-            # if rd < 1 and st.session_state.active_rounds == rd:
-            #     st.session_state.active_rounds += 1
-            #
-            # st.rerun()
+    if st.button("Reset Wordle Solver"):
+
+        if "wdl" in st.session_state:
+            del st.session_state["wdl"]  # remove solver object
+
+        # Remove Round 1 state if it exists
+        if "round" in st.session_state and round_key in st.session_state["round"]:
+            del st.session_state["round"][round_key]
+
+        st.rerun()  # force UI to restart
+

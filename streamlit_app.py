@@ -29,23 +29,7 @@ st.markdown("Gray = letter not found")
 st.markdown("Yellow = good letter, wrong position")
 st.markdown("Green = good letter, correct position")
 
-if "active_rounds" not in st.session_state:
-    st.session_state.active_rounds = 1
-
-# for rd in range(1, st.session_state.active_rounds + 1):
-#
-#     stu.generate_round_section(rd)
-#     stu.run_wordle_solver(rd)
-#
-#     if 'round' in st.session_state:
-#         round_key = f"round_{rd}"
-#         state = st.session_state.round[round_key]
-#
-#         if state.get("solver_ran"):
-#             st.subheader("Wordle Solver Results")
-#             st.markdown(f"### Guess: {state['solver_guess']}")
-#             st.markdown(state["solver_results"].replace("\n", "  \n"))
-
+# Simplified for just 1 round
 rd = 1
 stu.generate_round_section(rd)
 stu.run_wordle_solver(rd)
@@ -58,3 +42,10 @@ if 'round' in st.session_state:
         st.subheader("Wordle Solver Results")
         st.markdown(f"### Guess: {state['guess']}")
         st.markdown(state["results"].replace("\n", "  \n"))
+
+        if len(st.session_state["wdl"].bad_letters) > 0:
+            st.subheader("Bad Letters")
+            bad_letters_string = ""
+            for i, a in enumerate(st.session_state["wdl"].bad_letters):
+                bad_letters_string += f"\n{i+1}. {a.upper()}"
+            st.markdown(bad_letters_string.replace("\n", "  \n"))
